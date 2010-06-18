@@ -26,7 +26,10 @@ class BaseField(object):
     def __init__(self, db_field=None, name=None, required=False, default=None, 
                  unique=False, unique_with=None, primary_key=False, validation=None,
                  choices=None):
-        self.db_field = (db_field or name) if not primary_key else '_id'
+        if not primary_key:
+           self.db_field = db_field or name
+        else:
+           self.db_field = '_id'
         if name:
             import warnings
             msg = "Fields' 'name' attribute deprecated in favour of 'db_field'"
@@ -457,8 +460,8 @@ class BaseDocument(object):
 
 if sys.version_info < (2, 5):
     # Prior to Python 2.5, Exception was an old-style class
-    def subclass_exception(name, parents, unused):
-        return types.ClassType(name, parents, {})
+    from old import *
+
 else:
     def subclass_exception(name, parents, module):
         return type(name, parents, {'__module__': module})

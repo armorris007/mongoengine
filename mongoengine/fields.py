@@ -3,6 +3,7 @@ from document import Document, EmbeddedDocument
 from connection import _get_db
 from operator import itemgetter
 
+import sys
 import re
 import pymongo
 import datetime
@@ -23,7 +24,7 @@ class StringField(BaseField):
     """
 
     def __init__(self, regex=None, max_length=None, min_length=None, **kwargs):
-        self.regex = re.compile(regex) if regex else None
+        self.regex = regex and re.compile(regex) or None
         self.max_length = max_length
         self.min_length = min_length
         super(StringField, self).__init__(**kwargs)
@@ -361,6 +362,7 @@ class DictField(BaseField):
         if not isinstance(value, dict):
             raise ValidationError('Only dictionaries may be used in a '
                                   'DictField')
+ 
 
         if any(('.' in k or '$' in k) for k in value):
             raise ValidationError('Invalid dictionary key name - keys may not '
@@ -520,3 +522,7 @@ class BinaryField(BaseField):
 
         if self.max_bytes is not None and len(value) > self.max_bytes:
             raise ValidationError('Binary value is too long')
+
+if sys.version_info < (2, 5):
+    # Prior to Python 2.5, Exception was an old-style class
+    from old import *

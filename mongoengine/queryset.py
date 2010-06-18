@@ -1,5 +1,6 @@
 from connection import _get_db
 
+import sys
 import pymongo
 import re
 import copy
@@ -188,7 +189,7 @@ class QuerySet(object):
             direction = pymongo.ASCENDING
             if key.startswith("-"):
                 direction = pymongo.DESCENDING
-            if key.startswith(("+", "-")):
+            if key.startswith("+") or key.startswith("-"):
                     key = key[1:]
 
             # Use real field name, do it manually because we need field
@@ -955,3 +956,7 @@ def queryset_manager(func):
         msg = 'Methods decorated with queryset_manager should take 2 arguments'
         warnings.warn(msg, DeprecationWarning)
     return QuerySetManager(func)
+
+if sys.version_info < (2, 5):
+    # Prior to Python 2.5, Exception was an old-style class
+    from old import *

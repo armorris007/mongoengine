@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+import sys
 import unittest
 import pymongo
 from datetime import datetime, timedelta
@@ -9,6 +9,8 @@ from mongoengine.queryset import (QuerySet, MultipleObjectsReturned,
                                   DoesNotExist)
 from mongoengine import *
 
+if sys.version_info < (2, 5):
+   from mongoengine.py import *
 
 class QuerySetTest(unittest.TestCase):
 
