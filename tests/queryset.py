@@ -10,7 +10,7 @@ from mongoengine.queryset import (QuerySet, MultipleObjectsReturned,
 from mongoengine import *
 
 if sys.version_info < (2, 5):
-   from mongoengine.py import *
+    from mongoengine.old import *
 
 class QuerySetTest(unittest.TestCase):
 
