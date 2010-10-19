@@ -115,7 +115,7 @@ class QueryTreeTransformerVisitor(QNodeVisitor):
             # the necessary parts. Then for each $or part, create a new query
             # that ANDs the necessary part with the $or part.
             clauses = []
-            for or_group in itertools.product(*or_groups):
+            for or_group in product(*or_groups):
                 q_object = reduce(lambda a, b: a & b, and_parts, Q())
                 q_object = reduce(lambda a, b: a & b, or_group, q_object)
                 clauses.append(q_object)
